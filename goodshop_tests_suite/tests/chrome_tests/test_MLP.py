@@ -24,7 +24,8 @@ def test_merchants_logo():
     else:
         raise Exception("Не найдено окно с ожидаемым URL")
 
+
 def test_add_rating_with_not_login():
     browser.open("https://www.goodshop.com/coupons/joann.com")  # Открываем тестируемую страницу
-    browser.element('span.star.icon-star-on[data-alt="4"]').click() # Выбираем рейтинг
-    browser.should(have.url_containing('https://www.goodshop.com/login')) # Проверка url
+    browser.element('span.star.icon-star-on[data-alt="4"]').click()  # Выбираем рейтинг
+    browser.should(have.url_containing('https://www.goodshop.com/login'))  # Проверка url
