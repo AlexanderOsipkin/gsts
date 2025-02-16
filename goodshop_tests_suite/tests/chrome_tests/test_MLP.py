@@ -1,7 +1,7 @@
 from selene import browser, have
 
 
-def test_MLP_page():
+def test_merchants_logo():
     browser.open("https://www.goodshop.com/coupons/joann.com")  # Открываем тестируемую страницу
     browser.element('.merchant-header h1').should(have.text(
         'JOANN Fabric & Craft Coupons, Discounts and Promo Codes'))  # проверяем что перешли на нужную страницу
@@ -23,3 +23,8 @@ def test_MLP_page():
             break
     else:
         raise Exception("Не найдено окно с ожидаемым URL")
+
+def test_add_rating_with_not_login():
+    browser.open("https://www.goodshop.com/coupons/joann.com")  # Открываем тестируемую страницу
+    browser.element('span.star.icon-star-on[data-alt="4"]').click() # Выбираем рейтинг
+    browser.should(have.url_containing('https://www.goodshop.com/login')) # Проверка url
