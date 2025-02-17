@@ -166,3 +166,5 @@ allure
 
 #credentinals
 .env
+
+goodshop_tests_suite/tests/chrome_tests/saved_data.txt
