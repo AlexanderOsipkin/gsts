@@ -48,7 +48,7 @@ def test_FAQ_block():
 
 def test_coupon_id():
     browser.open("https://www.goodshop.com/coupons/joann.com")  # Открываем тестируемую страницу
-    link = browser.element('[data-deal-position="1"]')  # Находим кнопку
+    link = browser.element('[data-deal-position="1"]')  # Находим купон №1 и кликаем на него
 
     initial_windows = set(browser.driver.window_handles)  # Получаем список вкладок до клика на кнопку
     link.click()  # Кликаем по кнопке
@@ -61,6 +61,7 @@ def test_coupon_id():
     for new_window in new_windows:
         browser.driver.switch_to.window(new_window)  # Переключаемся на новую вкладку
         current_url = browser.driver.current_url
+
         if "joann.com" in current_url:
             parsed_url = urlparse(current_url)
             query_params = parse_qs(parsed_url.query)  # Разбираем параметры URL
