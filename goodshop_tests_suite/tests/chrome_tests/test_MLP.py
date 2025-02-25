@@ -84,14 +84,11 @@ def test_breadcrumbs():
     browser.open("https://www.goodshop.com/coupons/joann.com")
     breadcrumbs = browser.all(".breadcrumbs .crumb")  # Находим все элементы .crumb внутри .breadcrumbs
 
-    # Проверяем, что в breadcrumbs есть хотя бы один элемент
-    breadcrumbs.should(have.size_greater_than(0))
+    breadcrumbs.should(have.size_greater_than(0))  # Проверяем, что в breadcrumbs есть хотя бы один элемент
 
-    # Получаем текст каждого элемента правильно
-    breadcrumb_texts = [crumb.get(query.text) for crumb in breadcrumbs]
+    breadcrumb_texts = [crumb.get(query.text) for crumb in breadcrumbs]  # Получаем текст каждого элемента правильно
 
-    # Логируем найденные элементы
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Логируем найденные элементы
     log_entry = f"{timestamp} Breadcrumbs: {', '.join(breadcrumb_texts)}\n---------------------\n"
 
     with open("breadcrumbs.txt", "a", encoding="utf-8") as file:
