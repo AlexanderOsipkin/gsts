@@ -1,4 +1,4 @@
-from selene import browser, have
+from selene import browser, have, query
 from urllib.parse import urlparse, parse_qs
 from datetime import datetime
 import os
@@ -40,7 +40,7 @@ def test_store_info():
         have.text('JOANN Fabric & Craft Store Info'))  # проверяем что есть блок информации
 
 
-def test_FAQ_block():
+def test_faq_block():
     browser.open("https://www.goodshop.com/coupons/joann.com")  # Открываем тестируемую страницу
     browser.element('.blurb.how-to-use').should(
         have.text('More FAQs for JOANN Fabric & Craft'))  # проверяем что блок FAQ есть
@@ -78,3 +78,23 @@ def test_coupon_id():
                 raise Exception("Некорректное или отсутствующее значение параметра 'StringCouponID' в URL")
             return
         raise Exception("Не найдено окно с ожидаемым URL")
+
+
+def test_breadcrumbs():
+    browser.open("https://www.goodshop.com/coupons/joann.com")
+    breadcrumbs = browser.all(".breadcrumbs .crumb")  # Находим все элементы .crumb внутри .breadcrumbs
+
+    # Проверяем, что в breadcrumbs есть хотя бы один элемент
+    breadcrumbs.should(have.size_greater_than(0))
+
+    # Получаем текст каждого элемента правильно
+    breadcrumb_texts = [crumb.get(query.text) for crumb in breadcrumbs]
+
+    # Логируем найденные элементы
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    log_entry = f"{timestamp} Breadcrumbs: {', '.join(breadcrumb_texts)}\n---------------------\n"
+
+    with open("breadcrumbs.txt", "a", encoding="utf-8") as file:
+        file.write(log_entry)  # Записываем в файл
+
+    print("Сохранены значения Breadcrumbs:", log_entry)  # Логируем в консоль
