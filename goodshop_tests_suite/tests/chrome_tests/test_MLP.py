@@ -103,6 +103,7 @@ def test_coupon_id():
 
 
 def test_breadcrumbs():
+    # Открываем тестируемую страницу
     browser.open("https://www.goodshop.com/coupons/joann.com")
     # Находим все элементы .crumb внутри .breadcrumbs
     breadcrumbs = browser.all(".breadcrumbs .crumb")
