@@ -47,7 +47,7 @@ def test_twitter_button():
 
 
 def test_about_of_organization():
-    # Открываем страницу
+    # Открываем тестируемую страницу
     browser.open('https://www.goodshop.com/nonprofit/green-park-lutheran-school')
 
     # Проверяем, что заголовки и детали присутствуют
