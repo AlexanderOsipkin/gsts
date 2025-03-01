@@ -1,79 +1,101 @@
 from selene import browser, have, query
 from urllib.parse import urlparse, parse_qs
 from datetime import datetime
-import os
 
 
 def test_merchants_logo():
-    browser.open("https://www.goodshop.com/coupons/joann.com")  # Открываем тестируемую страницу
+    # Открываем тестируемую страницу
+    browser.open("https://www.goodshop.com/coupons/joann.com")
+    # проверяем что перешли на нужную страницу
     browser.element('.merchant-header h1').should(have.text(
-        'JOANN Fabric & Craft Coupons, Discounts and Promo Codes'))  # проверяем что перешли на нужную страницу
+        'JOANN Fabric & Craft Coupons, Discounts and Promo Codes'))
+    # Находим элемент, который открывает новую вкладку
     link = browser.element(
-        '[id="sidebar"] [data-deal-redirect-type="logo-header-m"]')  # Находим элемент, который открывает новую вкладку
+        '[id="sidebar"] [data-deal-redirect-type="logo-header-m"]')
 
-    initial_windows = set(browser.driver.window_handles)  # Получаем список вкладок до клика
-    link.click()  # Кликаем по ссылке
+    # Получаем список вкладок браузера до клика
+    initial_windows = set(browser.driver.window_handles)
+    link.click()
 
-    new_windows = set(browser.driver.window_handles) - initial_windows  # Определяем новые вкладки
+    # Определяем новые вкладки браузера
+    new_windows = set(browser.driver.window_handles) - initial_windows
 
     if not new_windows:
         raise Exception("Новая вкладка не была открыта")
 
+    # Переключаемся на новую вкладку и проверяем что открылась нужная вкладка
     for new_window in new_windows:
-        browser.driver.switch_to.window(new_window)  # Переключаемся на новую вкладку
+        browser.driver.switch_to.window(new_window)
         if "joann.com" in browser.driver.current_url:
-            browser.should(have.url("https://www.joann.com/"))  # Проверяем, что открылась нужная вкладка
+            browser.should(have.url("https://www.joann.com/"))
             break
     else:
         raise Exception("Не найдено окно с ожидаемым URL")
 
 
 def test_add_rating_with_not_login():
-    browser.open("https://www.goodshop.com/coupons/joann.com")  # Открываем тестируемую страницу
-    browser.element('span.star.icon-star-on[data-alt="4"]').click()  # Выбираем рейтинг
-    browser.should(have.url_containing('https://www.goodshop.com/login'))  # Проверка url
+    # Открываем тестируемую страницу
+    browser.open("https://www.goodshop.com/coupons/joann.com")
+    # Выбираем рейтинг
+    browser.element('span.star.icon-star-on[data-alt="4"]').click()
+    # Проверка url
+    browser.should(have.url_containing('https://www.goodshop.com/login'))
 
 
 def test_store_info():
-    browser.open("https://www.goodshop.com/coupons/joann.com")  # Открываем тестируемую страницу
+    # Открываем тестируемую страницу
+    browser.open("https://www.goodshop.com/coupons/joann.com")
+    # проверяем что есть блок информации
     browser.element('[data-js="additional-store-info-media-box"]').should(
-        have.text('JOANN Fabric & Craft Store Info'))  # проверяем что есть блок информации
+        have.text('JOANN Fabric & Craft Store Info'))
 
 
 def test_faq_block():
-    browser.open("https://www.goodshop.com/coupons/joann.com")  # Открываем тестируемую страницу
+    # Открываем тестируемую страницу
+    browser.open("https://www.goodshop.com/coupons/joann.com")
+    # проверяем что блок FAQ есть
     browser.element('.blurb.how-to-use').should(
-        have.text('More FAQs for JOANN Fabric & Craft'))  # проверяем что блок FAQ есть
+        have.text('More FAQs for JOANN Fabric & Craft'))
 
 
 def test_coupon_id():
-    browser.open("https://www.goodshop.com/coupons/joann.com")  # Открываем тестируемую страницу
-    link = browser.element('[data-deal-position="1"]')  # Находим купон №1 и кликаем на него
+    # Открываем тестируемую страницу
+    browser.open("https://www.goodshop.com/coupons/joann.com")
+    # Находим купон №1 и кликаем на него
+    link = browser.element('[data-deal-position="1"]')
 
-    initial_windows = set(browser.driver.window_handles)  # Получаем список вкладок до клика на кнопку
-    link.click()  # Кликаем по кнопке
+    # Получаем список вкладок до клика на кнопку
+    initial_windows = set(browser.driver.window_handles)
+    link.click()
 
-    new_windows = set(browser.driver.window_handles) - initial_windows  # Определяем новые вкладки браузера
+    # Определяем новые вкладки браузера
+    new_windows = set(browser.driver.window_handles) - initial_windows
 
+    # если вкладка не открыта, пишем это
     if not new_windows:
-        raise Exception("Новая вкладка не была открыта")  # если вкладка не открыта, пишем это
+        raise Exception("Новая вкладка не была открыта")
 
+    # Переключаемся на новую вкладку
     for new_window in new_windows:
-        browser.driver.switch_to.window(new_window)  # Переключаемся на новую вкладку
+        browser.driver.switch_to.window(new_window)
         current_url = browser.driver.current_url
 
         if "joann.com" in current_url:
             parsed_url = urlparse(current_url)
-            query_params = parse_qs(parsed_url.query)  # Разбираем параметры URL
-            string_coupon_id = query_params.get("open", [None])[0]  # Извлекаем значение после ?open=
+            # Разбираем параметры URL
+            query_params = parse_qs(parsed_url.query)
+            # Извлекаем значение после ?open=
+            string_coupon_id = query_params.get("open", [None])[0]
 
-            if string_coupon_id and string_coupon_id.isdigit():  # Проверяем, что значение является числом
-                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Получаем текущую дату и время
+            # Проверяем, что значение является числом и получаем текущию дату и время
+            if string_coupon_id and string_coupon_id.isdigit():
+                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 log_entry = f"{timestamp} StringCouponID: {string_coupon_id}\n---------------------\n"
 
+                # Добавляем запись в файл в лог
                 with open("saved_data.txt", "a") as file:
-                    file.write(log_entry)  # Добавляем запись в файл в виде столбика
-                print("Сохранено значение StringCouponID:", log_entry)  # Логируем
+                    file.write(log_entry)
+                print("Сохранено значение StringCouponID:", log_entry)
             else:
                 raise Exception("Некорректное или отсутствующее значение параметра 'StringCouponID' в URL")
             return
@@ -82,16 +104,22 @@ def test_coupon_id():
 
 def test_breadcrumbs():
     browser.open("https://www.goodshop.com/coupons/joann.com")
-    breadcrumbs = browser.all(".breadcrumbs .crumb")  # Находим все элементы .crumb внутри .breadcrumbs
+    # Находим все элементы .crumb внутри .breadcrumbs
+    breadcrumbs = browser.all(".breadcrumbs .crumb")
 
-    breadcrumbs.should(have.size_greater_than(0))  # Проверяем, что в breadcrumbs есть хотя бы один элемент
+    # Проверяем, что в breadcrumbs есть хотя бы один элемент
+    breadcrumbs.should(have.size_greater_than(0))
 
-    breadcrumb_texts = [crumb.get(query.text) for crumb in breadcrumbs]  # Получаем текст каждого элемента правильно
+    # Получаем текст каждого элемента правильно
+    breadcrumb_texts = [crumb.get(query.text) for crumb in breadcrumbs]
 
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Логируем найденные элементы
+    # Логируем найденные элементы
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     log_entry = f"{timestamp} Breadcrumbs: {', '.join(breadcrumb_texts)}\n---------------------\n"
 
+    # Записываем в файл
     with open("breadcrumbs.txt", "a", encoding="utf-8") as file:
-        file.write(log_entry)  # Записываем в файл
+        file.write(log_entry)
 
-    print("Сохранены значения Breadcrumbs:", log_entry)  # Логируем в консоль
+        # Логируем в консоль
+    print("Сохранены значения Breadcrumbs:", log_entry)
