@@ -169,3 +169,4 @@ allure
 
 goodshop_tests_suite/tests/chrome_tests/saved_data.txt
 goodshop_tests_suite/tests/chrome_tests/breadcrumbs.txt
+goodshop_tests_suite/tests/chrome_tests/about_of_charity_organization.txt

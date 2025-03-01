@@ -1,4 +1,5 @@
-from selene import browser, have, be
+from selene import browser, have, query
+from datetime import datetime
 
 
 def test_facebook_button():
@@ -43,3 +44,25 @@ def test_twitter_button():
 
     # Проверяем, что URL нового окна содержит "x.com" или "twitter.com"
     browser.should(have.url_containing('x.com' or 'twitter.com'))
+
+
+def test_about_of_organization():
+    # Открываем страницу
+    browser.open('https://www.goodshop.com/nonprofit/green-park-lutheran-school')
+
+    # Проверяем, что заголовки и детали присутствуют
+    elements = browser.all('.cause-about > *')
+
+    # Извлекаем текст всех элементов
+    about_texts = [element.get(query.text) for element in elements]
+
+    # Логируем найденные значения
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    log_entry = f"{timestamp} About Section: {', '.join(about_texts)}\n---------------------\n"
+
+    # Записываем в файл
+    with open("about_of_charity_organization.txt", "a", encoding="utf-8") as file:
+        file.write(log_entry)
+
+    # Логируем в консоль
+    print("Сохранены значения About Section:", log_entry)
