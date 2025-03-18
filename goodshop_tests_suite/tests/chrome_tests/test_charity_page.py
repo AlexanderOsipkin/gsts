@@ -60,7 +60,7 @@ def test_about_of_organization():
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     log_entry = f"{timestamp} About Section: {', '.join(about_texts)}\n---------------------\n"
 
-    # Записываем в файл
+    # Записываем значения в файл
     with open("about_of_charity_organization.txt", "a", encoding="utf-8") as file:
         file.write(log_entry)
 
