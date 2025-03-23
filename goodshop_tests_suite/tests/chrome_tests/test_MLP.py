@@ -17,13 +17,13 @@ def test_merchants_logo():
     initial_windows = set(browser.driver.window_handles)
     link.click()
 
-    # Определяем новые вкладки браузера
+    # Определяем какие новые вкладки браузера открылись
     new_windows = set(browser.driver.window_handles) - initial_windows
 
     if not new_windows:
         raise Exception("Новая вкладка не была открыта")
 
-    # Переключаемся на новую вкладку и проверяем что открылась нужная вкладка
+    # Переключаемся на новую вкладку и проверяем что это нужная вкладка
     for new_window in new_windows:
         browser.driver.switch_to.window(new_window)
         if "joann.com" in browser.driver.current_url:
