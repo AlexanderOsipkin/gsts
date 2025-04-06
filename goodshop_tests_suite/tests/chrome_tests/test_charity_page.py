@@ -85,3 +85,33 @@ def test_amount_raised():
     # Ищем строку "2012 Total" и проверяем значение
     row = browser.all('div.breakdown tbody tr').element_by(have.text('2012 Total'))
     row.element('td:last-child').should(have.exact_text('$13.67'))
+
+
+def test_how_it_works_section():
+    browser.open('https://www.goodshop.com/nonprofit/green-park-lutheran-school')
+
+    how_it_works = browser.element('div.how-it-works')
+
+    # Проверяем заголовок
+    how_it_works.element('.main-title').should(have.exact_text('How it works...'))
+
+    steps = how_it_works.all('.step')
+
+    # Проверяем, что 3 шага
+    steps.should(have.size(3))
+
+    # Первый шаг: You Shop.
+    steps[0].element('.title').should(have.exact_text('You Shop.'))
+    steps[0].element('.details').should(have.text('Shop at your favorite stores through Goodshop'))
+
+    # Второй шаг: You Save.
+    steps[1].element('.title').should(have.exact_text('You Save.'))
+    steps[1].element('.details').should(have.text('Save big on all your purchases'))
+
+    # Третий шаг: We Give.
+    steps[2].element('.title').should(have.exact_text('We Give.'))
+    steps[2].element('.details').should(have.text('we make a donation in your honor'))
+
+    # Проверяем наличие кнопки "Get Started"
+    how_it_works.element('a.get-started').should(have.exact_text('Get Started'))
+    how_it_works.element('a.get-started').should(be.visible)
