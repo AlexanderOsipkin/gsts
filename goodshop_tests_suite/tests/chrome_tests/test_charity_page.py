@@ -1,5 +1,6 @@
 from selene import browser, have, query, be, by
 from datetime import datetime
+import time
 
 
 def test_facebook_button():
@@ -120,6 +121,14 @@ def test_how_it_works_section():
 def test_cookie_settings_toggle_on_page():
     browser.open('https://www.goodshop.com/nonprofit/green-park-lutheran-school')
 
+    # Шаг 1: Закрытие баннера куки, если он существует
+    banner = browser.element('#consentBanner')
+    if banner.should(be.visible):
+        banner.element('.bannerButton a.ok').click()
+
+    # Шаг 2: Ожидание исчезновения баннера и клик по кнопке для открытия настроек куки
+    browser.element('#consentFloatingButton').click()  # Открываем настройки куки
+
     cookie_settings = browser.element('#consentSettings')
     cookie_settings.should(be.visible)
 
@@ -151,8 +160,16 @@ def test_cookie_settings_toggle_on_page():
 
     # Step 2: отключаем — Withdraw consent
     cookie_settings.element('.settingsWithdrawButton').click()
+
+    # Добавим небольшую задержку для обновления состояния
+    time.sleep(1)  # Ждем 1 секунду, чтобы элементы обновились
+
     assert_only_necessary_granted()
 
     # Step 3: снова включаем — Approve consent
     cookie_settings.element('.settingsApproveButton').click()
+
+    # Добавим задержку после клика на Approve
+    time.sleep(1)  # Ждем 1 секунду, чтобы элементы обновились
+
     assert_all_granted()
