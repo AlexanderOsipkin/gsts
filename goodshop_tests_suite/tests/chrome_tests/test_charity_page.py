@@ -97,21 +97,62 @@ def test_how_it_works_section():
 
     steps = how_it_works.all('.step')
 
-    # Проверяем, что 3 шага
+    # Проверяем, что все 3 элемента есть на странице
     steps.should(have.size(3))
 
-    # Первый шаг: You Shop.
+    # You Shop.
     steps[0].element('.title').should(have.exact_text('You Shop.'))
     steps[0].element('.details').should(have.text('Shop at your favorite stores through Goodshop'))
 
-    # Второй шаг: You Save.
+    # You Save.
     steps[1].element('.title').should(have.exact_text('You Save.'))
     steps[1].element('.details').should(have.text('Save big on all your purchases'))
 
-    # Третий шаг: We Give.
+    # We Give.
     steps[2].element('.title').should(have.exact_text('We Give.'))
     steps[2].element('.details').should(have.text('we make a donation in your honor'))
 
     # Проверяем наличие кнопки "Get Started"
     how_it_works.element('a.get-started').should(have.exact_text('Get Started'))
     how_it_works.element('a.get-started').should(be.visible)
+
+
+def test_cookie_settings_toggle_on_page():
+    browser.open('https://www.goodshop.com/nonprofit/green-park-lutheran-school')
+
+    cookie_settings = browser.element('#consentSettings')
+    cookie_settings.should(be.visible)
+
+    # Заголовок
+    cookie_settings.element('.settingsTitle').should(have.exact_text('Your cookie settings'))
+
+    all_cookies = ['necessary', 'preferences', 'statistics', 'marketing']
+
+    def assert_all_granted():
+        for group in all_cookies:
+            item = cookie_settings.element(f'.settingsItem.{group}')
+            item.should(be.visible)
+            item.should(have.text(group.capitalize()))
+            item.element('span.granted').should(be.visible)
+            item.element('span.denied').should(be.hidden)
+
+    def assert_only_necessary_granted():
+        for group in all_cookies:
+            item = cookie_settings.element(f'.settingsItem.{group}')
+            if group == 'necessary':
+                item.element('span.granted').should(be.visible)
+                item.element('span.denied').should(be.hidden)
+            else:
+                item.element('span.granted').should(be.hidden)
+                item.element('span.denied').should(be.visible)
+
+    # Step 1: всё включено
+    assert_all_granted()
+
+    # Step 2: отключаем — Withdraw consent
+    cookie_settings.element('.settingsWithdrawButton').click()
+    assert_only_necessary_granted()
+
+    # Step 3: снова включаем — Approve consent
+    cookie_settings.element('.settingsApproveButton').click()
+    assert_all_granted()
