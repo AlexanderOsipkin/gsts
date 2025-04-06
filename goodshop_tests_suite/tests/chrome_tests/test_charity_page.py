@@ -1,4 +1,4 @@
-from selene import browser, have, query, be
+from selene import browser, have, query, be, by
 from datetime import datetime
 
 
@@ -72,14 +72,16 @@ def test_amount_raised():
     browser.open('https://www.goodshop.com/nonprofit/green-park-lutheran-school')
 
     browser.element('[href="#filter-amount"]').click()
-    browser.element('[id="year"]').click()
-    browser.element('[data-id="822203"]').click()
 
-    # Ожидаем, пока таблица появится
+    # Кликаем на селект, чтобы открыть список
+    browser.element('select#year').click()
+
+    # Выбираем нужный год по видимому тексту
+    browser.element('select#year').element(by.text('2012')).click()
+
+    # Ждём появления таблицы
     browser.element('div.breakdown').should(be.visible)
 
-    # Теперь ищем строку с "2012 Total"
+    # Ищем строку "2012 Total" и проверяем значение
     row = browser.all('div.breakdown tbody tr').element_by(have.text('2012 Total'))
-
-    # Проверяем, что в последней ячейке этой строки находится нужное значение
     row.element('td:last-child').should(have.exact_text('$13.67'))
