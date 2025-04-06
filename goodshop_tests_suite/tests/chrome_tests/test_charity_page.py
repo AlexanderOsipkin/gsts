@@ -73,6 +73,7 @@ def test_amount_raised():
     browser.open('https://www.goodshop.com/nonprofit/green-park-lutheran-school')
 
     browser.element('[href="#filter-amount"]').click()
+    browser.element('div.together').should(have.text('TOGETHER, WE\'VE RAISED'))
 
     # Кликаем на селект, чтобы открыть список
     browser.element('select#year').click()
