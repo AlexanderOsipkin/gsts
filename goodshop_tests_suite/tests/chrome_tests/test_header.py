@@ -33,7 +33,7 @@ def test_categories_in_header():
     # Проверить, что выпадающее меню с id="categories-dropdown-menu" появилось
     dropdown_menu = browser.element('#categories-dropdown-menu')
     dropdown_menu.should(be.visible)
-наведение курсора реализовал, нужно разобраться с остальной частью, что бы проверяло категории
+#наведение курсора реализовал, нужно разобраться с остальной частью, что бы проверяло категории
 
 # # Проверить, что элемент categories присутствует в хедере
 # browser.element('#categories-dropdown-menu').should(be.visible)
