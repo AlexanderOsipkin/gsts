@@ -23,45 +23,54 @@ def test_categories_in_header():
     if banner.should(be.visible):
         banner.element('.bannerButton a.ok').click()
 
-    # Открыть страницу с нужным контентом
-    browser.open('https://www.goodshop.com')
+    # Убедитесь, что элемент с id="categories" существует на странице
+    categories_button = browser.element('.navbar .categories')
+    categories_button.should(be.visible)
 
-    # Проверить, что элемент categories присутствует в хедере
-    browser.element('#categories-dropdown-menu').should(be.visible)
+    # Навести курсор на элемент с id="categories" для раскрытия выпадающего меню
+    categories_button.hover()
 
-    # Навести курсор на элемент "Categories", чтобы раскрыть меню
-    categories_header = browser.element('div#categories-dropdown-menu > div.categories-menu')
-    categories_header.hover()
+    # Проверить, что выпадающее меню с id="categories-dropdown-menu" появилось
+    dropdown_menu = browser.element('#categories-dropdown-menu')
+    dropdown_menu.should(be.visible)
+наведение курсора реализовал, нужно разобраться с остальной частью, что бы проверяло категории
 
-    # Перечень категорий и подкатегорий для проверки
-    categories = [
-        {
-            'category_name': 'Accessories',
-            'view_all_url': 'https://www.goodshop.com/coupons/clothing-accessories',
-            'subcategories': ['Bags', 'Designer Accessories', 'Eyewear', 'Luggage', 'Watches']
-        },
-        # Добавьте сюда другие категории, если нужно расширить
-    ]
-
-    for category in categories:
-        # Проверяем наличие самой категории
-        category_element = browser.element(f'a[title="{category["category_name"]}"]')
-        category_element.should(be.visible)
-
-        # Навести на категорию, чтобы увидеть подкатегории
-        category_element.hover()
-
-        # Проверка, что все подкатегории видны
-        for subcategory in category['subcategories']:
-            subcategory_element = browser.element(f'a[title="{subcategory}"]')
-            subcategory_element.should(be.visible)
-
-        # Кликнуть по ссылке "View all" и проверка перехода
-        view_all_link = browser.element(f'a[title="View all stores in this category"]')
-        view_all_link.click()
-
-        # Проверяем, что URL изменился на нужный
-        browser.should(have.url(category['view_all_url']))
-
-        # Возвращаемся на исходную страницу после проверки
-        browser.back()
+# # Проверить, что элемент categories присутствует в хедере
+# browser.element('#categories-dropdown-menu').should(be.visible)
+#
+# # Навести курсор на элемент "Categories", чтобы раскрыть меню
+# categories_header = browser.element('div#categories-dropdown-menu > div.categories-menu')
+# categories_header.hover()
+#
+# # Перечень категорий и подкатегорий для проверки
+# categories = [
+#     {
+#         'category_name': 'Accessories',
+#         'view_all_url': 'https://www.goodshop.com/coupons/clothing-accessories',
+#         'subcategories': ['Bags', 'Designer Accessories', 'Eyewear', 'Luggage', 'Watches']
+#     },
+#     # Добавьте сюда другие категории, если нужно расширить
+# ]
+#
+# for category in categories:
+#     # Проверяем наличие самой категории
+#     category_element = browser.element(f'a[title="{category["category_name"]}"]')
+#     category_element.should(be.visible)
+#
+#     # Навести на категорию, чтобы увидеть подкатегории
+#     category_element.hover()
+#
+#     # Проверка, что все подкатегории видны
+#     for subcategory in category['subcategories']:
+#         subcategory_element = browser.element(f'a[title="{subcategory}"]')
+#         subcategory_element.should(be.visible)
+#
+#     # Кликнуть по ссылке "View all" и проверка перехода
+#     view_all_link = browser.element(f'a[title="View all stores in this category"]')
+#     view_all_link.click()
+#
+#     # Проверяем, что URL изменился на нужный
+#     browser.should(have.url(category['view_all_url']))
+#
+#     # Возвращаемся на исходную страницу после проверки
+#     browser.back()
