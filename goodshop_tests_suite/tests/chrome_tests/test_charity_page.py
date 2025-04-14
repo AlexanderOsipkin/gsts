@@ -1,6 +1,6 @@
-from selene import browser, have, query, be, by
-from datetime import datetime
 import time
+from datetime import datetime
+from selene import browser, have, query, be, by
 
 
 def test_facebook_button():
