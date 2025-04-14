@@ -1,10 +1,30 @@
 import logging
+from datetime import datetime
 from selene import browser, have, be
 from goodshop_tests_suite.tests.chrome_tests.categories_data import categories
 
-# Настройка логирования
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
+# Настройка логирования для категорий
 logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+# Создаем файл обработчик для записи логов в файл
+file_handler = logging.FileHandler('header_categories_log.txt', mode='a', encoding='utf-8')
+file_handler.setLevel(logging.INFO)
+
+# Формат вывода
+formatter = logging.Formatter('%(asctime)s - %(message)s')
+file_handler.setFormatter(formatter)
+
+# Добавляем файл обработчик в логгер
+logger.addHandler(file_handler)
+
+
+def log_to_file(message):
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    log_entry = f"{timestamp} {message}\n---------------------\n"
+
+    with open("header_categories_log.txt", "a", encoding="utf-8") as file:
+        file.write(log_entry)
 
 
 def test_logo_icon():

@@ -12,7 +12,7 @@ categories = {
             "Coach",
             "Alex and Ani",
             "Kate Spade",
-            "Shop at Future Memories1"
+            "Shop at Future Memories"
         ]
     },
     "Art": {
@@ -121,7 +121,7 @@ categories = {
         "stores": [
             "fabric.com",
             "JOANN Fabric & Craft",
-            "Michaels",
+            "Michaels8",
             "Hobby Lobby"
         ]
     },
