@@ -12,7 +12,7 @@ categories = {
             "Coach",
             "Alex and Ani",
             "Kate Spade",
-            "Shop at Future Memories"
+            "Shop at Future Memories1"
         ]
     },
     "Art": {

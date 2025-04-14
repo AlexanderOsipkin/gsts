@@ -1,5 +1,10 @@
+import logging
 from selene import browser, have, be
 from goodshop_tests_suite.tests.chrome_tests.categories_data import categories
+
+# Настройка логирования
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
+logger = logging.getLogger()
 
 
 def test_logo_icon():
@@ -15,27 +20,43 @@ def test_logo_icon():
 
 
 def verify_category(category_name, expected_subcategories, expected_stores):
-    # Находим категорию и наводим курсор
-    category_element = browser.element(f'li.category-item a[title="{category_name}"]')
-    category_element.hover()
+    try:
+        # Логируем начало проверки категории
+        logger.info(f"Проверка категории: {category_name}")
 
-    # Получаем информацию о подкатегориях и магазинах
-    category_detail = category_element.element('..').element('.category-detail')
-    category_detail.should(be.visible)
+        # Находим категорию и наводим курсор
+        category_element = browser.element(f'li.category-item a[title="{category_name}"]')
+        category_element.hover()
 
-    # Проверка подкатегорий
-    category_detail.all('ul.sub-categories li.category-item a').should(have.texts(*expected_subcategories))
+        # Получаем информацию о подкатегориях и магазинах
+        category_detail = category_element.element('..').element('.category-detail')
+        category_detail.should(be.visible)
 
-    # Проверка магазинов
-    category_detail.all('.category-featured-stores .title').should(have.texts(*expected_stores))
+        # Проверка подкатегорий
+        logger.info(f"Ожидаемые подкатегории: {expected_subcategories}")
+        category_detail.all('ul.sub-categories li.category-item a').should(have.texts(*expected_subcategories))
+
+        # Проверка магазинов
+        logger.info(f"Ожидаемые магазины: {expected_stores}")
+        category_detail.all('.category-featured-stores .title').should(have.texts(*expected_stores))
+
+    except Exception as e:
+        logger.error(f"Ошибка при проверке категории '{category_name}': {e}")
+        raise
 
 
 def verify_all_stores_link():
-    # Проверка ссылки "See all stores"
-    all_stores_element = browser.element('.all-stores a[title="See all stores"]')
-    all_stores_element.should(be.visible)
-    all_stores_element.should(have.text("See all stores"))
-    all_stores_element.should(have.attribute("href", "https://www.goodshop.com/coupons"))
+    try:
+        # Проверка ссылки "See all stores"
+        logger.info("Проверка ссылки 'See all stores'")
+        all_stores_element = browser.element('.all-stores a[title="See all stores"]')
+        all_stores_element.should(be.visible)
+        all_stores_element.should(have.text("See all stores"))
+        all_stores_element.should(have.attribute("href", "https://www.goodshop.com/coupons"))
+
+    except Exception as e:
+        logger.error(f"Ошибка при проверке ссылки 'See all stores': {e}")
+        raise
 
 
 def test_category_dropdowns_and_subcategories():
