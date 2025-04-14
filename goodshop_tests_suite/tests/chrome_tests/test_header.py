@@ -33,44 +33,28 @@ def test_categories_in_header():
     # Проверить, что выпадающее меню с id="categories-dropdown-menu" появилось
     dropdown_menu = browser.element('#categories-dropdown-menu')
     dropdown_menu.should(be.visible)
-#наведение курсора реализовал, нужно разобраться с остальной частью, что бы проверяло категории
 
-# # Проверить, что элемент categories присутствует в хедере
-# browser.element('#categories-dropdown-menu').should(be.visible)
-#
-# # Навести курсор на элемент "Categories", чтобы раскрыть меню
-# categories_header = browser.element('div#categories-dropdown-menu > div.categories-menu')
-# categories_header.hover()
-#
-# # Перечень категорий и подкатегорий для проверки
-# categories = [
-#     {
-#         'category_name': 'Accessories',
-#         'view_all_url': 'https://www.goodshop.com/coupons/clothing-accessories',
-#         'subcategories': ['Bags', 'Designer Accessories', 'Eyewear', 'Luggage', 'Watches']
-#     },
-#     # Добавьте сюда другие категории, если нужно расширить
-# ]
-#
-# for category in categories:
-#     # Проверяем наличие самой категории
-#     category_element = browser.element(f'a[title="{category["category_name"]}"]')
-#     category_element.should(be.visible)
-#
-#     # Навести на категорию, чтобы увидеть подкатегории
-#     category_element.hover()
-#
-#     # Проверка, что все подкатегории видны
-#     for subcategory in category['subcategories']:
-#         subcategory_element = browser.element(f'a[title="{subcategory}"]')
-#         subcategory_element.should(be.visible)
-#
-#     # Кликнуть по ссылке "View all" и проверка перехода
-#     view_all_link = browser.element(f'a[title="View all stores in this category"]')
-#     view_all_link.click()
-#
-#     # Проверяем, что URL изменился на нужный
-#     browser.should(have.url(category['view_all_url']))
-#
-#     # Возвращаемся на исходную страницу после проверки
-#     browser.back()
+    # Наводим курсор на категорию "Accessories"
+    accessories = browser.element('li.category-item a[title="Accessories"]')
+    accessories.hover()
+
+    # Ждем появления блока с подкатегориями
+    subcategories_block = browser.element('.category-detail')
+    subcategories_block.should(be.visible)
+
+    # Проверяем наличие подкатегорий
+    expected_subcategories = [
+        "Bags",
+        "Designer Accessories",
+        "Eyewear",
+        "Luggage",
+        "Watches"
+    ]
+
+    subcategory_elements = subcategories_block.all('ul.sub-categories li.category-item a')
+
+    # Проверка, что количество совпадает
+    subcategory_elements.should(have.size(len(expected_subcategories)))
+
+    # Проверка названий
+    subcategory_elements.should(have.texts(*expected_subcategories))
