@@ -121,7 +121,7 @@ categories = {
         "stores": [
             "fabric.com",
             "JOANN Fabric & Craft",
-            "Michaels8",
+            "Michaels",
             "Hobby Lobby"
         ]
     },
