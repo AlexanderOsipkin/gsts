@@ -179,6 +179,14 @@ def verify_category(category_name, expected_subcategories, expected_stores):
     category_detail.all('.category-featured-stores .title').should(have.texts(*expected_stores))
 
 
+def verify_all_stores_link():
+    # Проверка ссылки "See all stores"
+    all_stores_element = browser.element('.all-stores a[title="See all stores"]')
+    all_stores_element.should(be.visible)
+    all_stores_element.should(have.text("See all stores"))
+    all_stores_element.should(have.attribute("href").equal_to("https://www.goodshop.com/coupons"))
+
+
 def test_category_dropdowns_and_subcategories():
     browser.open('https://www.goodshop.com')
 
