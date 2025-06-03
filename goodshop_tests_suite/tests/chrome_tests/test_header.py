@@ -115,3 +115,9 @@ def test_goodsearch_button():
     browser.element('[id="keywords"]').should(be.visible)
     browser.element('.Search_odometerLabel__t7vyl').should(have.text('In Donations Earned'))
 
+
+def test_holiday_page():
+    browser.open('https://www.goodshop.com')
+    browser.element('.navbar li.holiday-item').click()
+    browser.element('.block-title').should(have.text('Coupon Codes & Deals'))
+    browser.element('.alphabet').should(have.text('Browse by Store'))
