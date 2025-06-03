@@ -104,3 +104,14 @@ def test_category_dropdowns_and_subcategories():
 
     # Проверка ссылки "See all stores"
     verify_all_stores_link()
+
+
+def test_goodsearch_button():
+    browser.open('https://www.goodshop.com')
+    # нажимаем на нужный нам элемент
+    browser.element('[data-track-click-type="goodsearch link"]').click()
+    # убеждаемся что нас переместило на нужную страницу
+    browser.should(have.url_containing('https://www.goodsearch.com'))
+    browser.element('[id="keywords"]').should(be.visible)
+    browser.element('.Search_odometerLabel__t7vyl').should(have.text('In Donations Earned'))
+
