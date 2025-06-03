@@ -104,3 +104,9 @@ def test_category_dropdowns_and_subcategories():
 
     # Проверка ссылки "See all stores"
     verify_all_stores_link()
+
+
+def test_goodsearch_button():
+    browser.open('https://www.goodshop.com')
+    browser.element('[data-track-click-type="goodsearch link"]').click()
+
