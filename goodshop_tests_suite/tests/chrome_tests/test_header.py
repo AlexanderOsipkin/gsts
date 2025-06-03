@@ -110,7 +110,7 @@ def test_goodsearch_button():
     browser.open('https://www.goodshop.com')
     # нажимаем на нужный нам элемент
     browser.element('[data-track-click-type="goodsearch link"]').click()
-    # убеждаемся что нас переместило на нужную страницу
+    # убеждаемся что нас перешли на нужную страницу
     browser.should(have.url_containing('https://www.goodsearch.com'))
     browser.element('[id="keywords"]').should(be.visible)
     browser.element('.Search_odometerLabel__t7vyl').should(have.text('In Donations Earned'))
@@ -118,6 +118,8 @@ def test_goodsearch_button():
 
 def test_holiday_page():
     browser.open('https://www.goodshop.com')
+    # нажимаем на нужную кнопку
     browser.element('.navbar li.holiday-item').click()
+    # проверяем что перешли на нужную страницу
     browser.element('.block-title').should(have.text('Coupon Codes & Deals'))
     browser.element('.alphabet').should(have.text('Browse by Store'))
