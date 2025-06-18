@@ -171,3 +171,4 @@ goodshop_tests_suite/tests/chrome_tests/saved_data.txt
 goodshop_tests_suite/tests/chrome_tests/breadcrumbs.txt
 goodshop_tests_suite/tests/chrome_tests/about_of_charity_organization.txt
 goodshop_tests_suite/tests/chrome_tests/header_categories_log.txt
+goodshop_tests_suite/tests/chrome_tests/categories_data.py
